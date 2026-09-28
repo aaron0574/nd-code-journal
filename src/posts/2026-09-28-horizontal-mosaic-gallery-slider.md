@@ -5,7 +5,7 @@ date: 2026-09-28
 tags: [css, components, javascript]
 languages: [css, html, js]
 browserSupport: "CSS Grid, container queries and scroll snap are Baseline in all evergreen browsers. The @media (scripting) query is Baseline 2023; older browsers just skip the arrow buttons and keep the scrollbar."
-draft: true
+draft: false
 ---
 
 <!-- ✏️ DRAFT: intro. Swap in your own voice and details. -->
@@ -13,7 +13,7 @@ Late summer on the nd.edu homepage, our team ran a "How was your summer?" featur
 
 It ships in the Notre Dame Web Theme as the `.gallery--slider` modifier. This post takes the idea apart and rebuilds it as a portable component you can use on any site.
 
-{% demo "Mosaic slider (drag, swipe, or use the arrows)", 500 %}
+{% demo "Mosaic slider (drag, swipe, or use the arrows)", 420 %}
 <section class="mosaic" data-mosaic aria-label="Summer photo gallery">
   <ul class="mosaic__track" tabindex="0">
     <li><span class="ph">1</span></li><li><span class="ph">2</span></li>
@@ -94,8 +94,6 @@ It ships in the Notre Dame Web Theme as the `.gallery--slider` modifier. This po
 {% enddemo %}
 
 The numbers are there so you can follow the pattern. Tiles 1 and 13 have the same shape, and so do 2 and 14, because the layout repeats every twelve tiles.
-
-<!-- On nd.edu this gallery runs the full width of the page, so press **Expand** to see it at that size. Then try the **Phone** and **Tablet** presets, or drag either side of the frame, and watch the mosaic switch from four rows of mixed tiles to two rows of squares. The same handle on the right edge of the demo above lets you do this without leaving the article. -->
 
 ## Turn the grid on its side
 

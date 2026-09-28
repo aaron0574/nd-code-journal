@@ -4,9 +4,9 @@
  */
 export default {
 	title: "Code Journal",
-	tagline: "Working code from the web team under the Dome",
+	tagline: "From the web team at Notre Dame",
 	description:
-		"Practical, copy-ready code examples from day-to-day web design and development work at the University of Notre Dame — HTML, CSS, JavaScript, and accessibility.",
+		"Accessible components, CSS, and hard-won solutions from building websites at the University of Notre Dame, shared so you can use them on your own sites.",
 	/**
 	 * Absolute site address, used for canonical URLs and the feed.
 	 * On Netlify this is automatic: production builds use URL (your live domain),
@@ -19,10 +19,17 @@ export default {
 	language: "en",
 	author: {
 		name: "Aaron Greene",
-		role: "Senior Web Designer & Developer, University of Notre Dame",
+		role: "Senior Designer, University of Notre Dame",
+		/** Profile photo for the About page, e.g. "/assets/img/aaron.jpg" (square works best). Leave empty to show initials. */
+		photo: "",
+		links: {
+			coffee: "https://buymeacoffee.com/aarongreene",
+			instagram: "https://www.instagram.com/aarons_sketchbook",
+			linkedin: "https://www.linkedin.com/in/agreene15/",
+		},
 		email: "agreene5@nd.edu",
 		url: "https://www.nd.edu",
-		bio: "I design and build websites for the University of Notre Dame. This journal collects the snippets, patterns, and small tools that come out of that work so they're easy to find again — for me and for you.",
+		bio: "Components, CSS, and solutions from building the University of Notre Dame's websites. Accessible, usable, and understandable first, then pushed further.",
 	},
 	/**
 	 * Comments via Giscus (GitHub Discussions) — https://giscus.app

@@ -18,13 +18,22 @@ bodyClass: is-post
 			<h1 class="post-header__title">{{ title }}</h1>
 			{% if description %}<p class="post-header__dek">{{ description }}</p>{% endif %}
 			<div class="post-header__meta" data-pagefind-ignore>
-				<p class="post-header__byline">
-					<span>By <strong>{{ site.author.name }}</strong></span>
-					<span aria-hidden="true">·</span>
-					<time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time>
-					<span aria-hidden="true">·</span>
-					<span>{{ content | readingTime }}</span>
-				</p>
+				<div class="post-header__byline-group">
+					<p class="post-header__byline">
+						<span>By <strong>{{ site.author.name }}</strong></span>
+						<span aria-hidden="true">·</span>
+						<time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time>
+						<span aria-hidden="true">·</span>
+						<span>{{ content | readingTime }}</span>
+					</p>
+					{%- if site.comments.repoId and site.comments.categoryId and not draft %}
+					<a class="reaction-summary" href="#comments" data-reaction-summary hidden>
+						<span class="reaction-summary__counts" data-reaction-counts></span>
+						<span class="reaction-summary__cta" data-reaction-cta>React or comment</span>
+						<svg aria-hidden="true" viewBox="0 0 16 16" width="12" height="12"><path d="M8 3v10M4 9l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+					</a>
+					{%- endif %}
+				</div>
 				<ul class="topic-labels" role="list">
 					{%- for t in topics %}
 					<li><a class="topic-label" data-color="{{ (t | topicMeta).color }}" href="/topics/{{ t | slugify }}/">{{ (t | topicMeta).label }}</a></li>
@@ -71,10 +80,10 @@ bodyClass: is-post
 </article>
 
 {%- if site.comments.repoId and site.comments.categoryId and not draft %}
-<section class="comments" aria-labelledby="comments-title" data-pagefind-ignore>
+<section class="comments" id="comments" aria-labelledby="comments-title" data-pagefind-ignore>
 	<div class="wrap">
 		<div class="comments__inner">
-			<div class="section-head"><h2 id="comments-title" class="section-title">Discussion</h2></div>
+			<div class="section-head"><h2 id="comments-title" class="section-title"><span class="highlight">Discussion</span></h2></div>
 			<p class="comments__intro">Questions, improvements, or a different approach? Comments use GitHub Discussions, so you'll sign in with a GitHub account, and code blocks work just like on GitHub.</p>
 			<div class="comments__embed"
 				data-giscus
@@ -93,7 +102,7 @@ bodyClass: is-post
 {%- if relatedPosts.length %}
 <section class="related" aria-labelledby="related-title">
 	<div class="wrap">
-		<div class="section-head"><h2 id="related-title" class="section-title">Keep reading</h2></div>
+		<div class="section-head"><h2 id="related-title" class="section-title"><span class="highlight">Keep reading</span></h2></div>
 		<div class="card-grid">
 			{%- for post in relatedPosts %}{% include "partials/card.njk" %}{% endfor %}
 		</div>

@@ -21,8 +21,9 @@ if (toggle) {
 }
 
 /* Comments (Giscus) ------------------------------------------------------
-   Loaded only when the comment section scrolls near the viewport, and kept
-   in step with the site's light/dark theme. */
+   Loaded once the page is idle (or sooner if the reader scrolls near it), so
+   the reaction summary under the byline can show live counts. Kept in step
+   with the site's light/dark theme. */
 const giscusHost = document.querySelector("[data-giscus]");
 const giscusTheme = () => {
 	const t = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
@@ -46,19 +47,51 @@ if (giscusHost) {
 			mapping: "pathname",
 			strict: "1",
 			"reactions-enabled": "1",
-			"emit-metadata": "0",
+			"emit-metadata": "1",
 			"input-position": "top",
 			theme: giscusTheme(),
 			lang: "en",
-			loading: "lazy",
 		};
 		for (const [k, v] of Object.entries(attrs)) s.setAttribute(`data-${k}`, v);
 		giscusHost.append(s);
 	};
+	let loaded = false;
+	const loadOnce = () => { if (!loaded) { loaded = true; io.disconnect(); load(); } };
 	const io = new IntersectionObserver((entries) => {
-		if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+		if (entries.some((e) => e.isIntersecting)) loadOnce();
 	}, { rootMargin: "600px 0px" });
 	io.observe(giscusHost);
+	// Don't compete with the article itself: wait until the page has settled
+	addEventListener("load", () => (window.requestIdleCallback || ((cb) => setTimeout(cb, 1500)))(loadOnce, { timeout: 4000 }));
+
+	/* Reaction summary under the byline ------------------------------------ */
+	const summary = document.querySelector("[data-reaction-summary]");
+	if (summary) {
+		summary.hidden = false;
+		const counts = summary.querySelector("[data-reaction-counts]");
+		const cta = summary.querySelector("[data-reaction-cta]");
+		const EMOJI = { THUMBS_UP: "👍", HEART: "❤️", HOORAY: "🎉", ROCKET: "🚀", LAUGH: "😄", EYES: "👀", CONFUSED: "😕", THUMBS_DOWN: "👎" };
+		const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+		addEventListener("message", (e) => {
+			if (e.origin !== "https://giscus.app" || !e.data?.giscus) return;
+			const d = e.data.giscus.discussion;
+			if (!d) return; // no thread yet (nobody has commented) — keep the plain call to action
+			const shown = Object.entries(d.reactions || {})
+				.filter(([, r]) => r.count > 0)
+				.sort((a, b) => b[1].count - a[1].count)
+				.slice(0, 4);
+			counts.replaceChildren(...shown.map(([key, r]) => {
+				const el = document.createElement("span");
+				el.className = "reaction-summary__item";
+				el.innerHTML = `<span aria-hidden="true">${EMOJI[key] || "•"}</span>${r.count}`;
+				return el;
+			}));
+			const comments = (d.totalCommentCount || 0) + (d.totalReplyCount || 0);
+			cta.textContent = comments ? plural(comments, "comment") : "React or comment";
+			summary.setAttribute("aria-label", `${plural(d.reactionCount || 0, "reaction")} and ${plural(comments, "comment")}. Jump to the discussion.`);
+		});
+	}
 	matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setGiscusTheme);
 }
 

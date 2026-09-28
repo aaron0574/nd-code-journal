@@ -8,12 +8,12 @@ bodyClass: is-home
 	<div class="wrap masthead__inner">
 		<div class="masthead__intro">
 			<p class="eyebrow">{{ site.tagline }}</p>
-			<h1 class="masthead__title">Code that shipped, written down so it ships again.</h1>
-			<p class="masthead__dek">Snippets, patterns and small tools from building websites at the University of Notre Dame. Every example is real, tested, and ready to copy.</p>
+			<h1 class="masthead__title"><span class="masthead__line">Built for <span class="highlight highlight--draw">everyone</span>.</span> <span class="masthead__line">Then pushed further.</span></h1>
+			<p class="masthead__dek">At Notre Dame, a website has to be accessible, usable, and understandable first. Only then do we push the design and functionality. Here we share the components, CSS, and hard-won solutions that let us do both.</p>
 			<form class="search-field search-field--lg" action="/search/" method="get" role="search">
 				<label class="visually-hidden" for="hero-q">Search articles and code</label>
 				<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-				<input id="hero-q" name="q" type="search" placeholder="Search for “accordion”, “clamp” or “fetch”" autocomplete="off">
+				<input id="hero-q" name="q" type="search" placeholder="Search for “accordion,” “clamp,” or “fetch”" autocomplete="off">
 				<button type="submit" class="btn btn--primary">Search</button>
 			</form>
 			<p class="masthead__stats">{{ collections.posts.length }} articles <span aria-hidden="true">·</span> {{ collections.topics.length }} topics <span aria-hidden="true">·</span> {{ collections.languages.length }} languages</p>
@@ -41,7 +41,7 @@ bodyClass: is-home
 <section class="home-section" aria-labelledby="latest-title">
 	<div class="wrap">
 		<div class="section-head">
-			<h2 id="latest-title" class="section-title">Recent articles</h2>
+			<h2 id="latest-title" class="section-title"><span class="highlight">Recent articles</span></h2>
 			<a class="link-arrow" href="/articles/">All articles</a>
 		</div>
 		<div class="card-grid">
@@ -53,11 +53,11 @@ bodyClass: is-home
 <section class="home-section" aria-labelledby="topics-title">
 	<div class="wrap">
 		<div class="section-head">
-			<h2 id="topics-title" class="section-title">Browse by topic</h2>
+			<h2 id="topics-title" class="section-title"><span class="highlight">Browse by topic</span></h2>
 			<a class="link-arrow" href="/topics/">All topics</a>
 		</div>
 		<ul class="topic-grid" role="list">
-			{%- for t in collections.topics | limit(4) %}
+			{%- for t in collections.topics | limit(3) %}
 			{%- set meta = t.name | topicMeta %}
 			<li class="topic-tile" data-color="{{ meta.color }}">
 				<h3><a href="/topics/{{ t.slug }}/">{{ meta.label }}</a></h3>
