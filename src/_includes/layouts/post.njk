@@ -1,0 +1,83 @@
+---
+layout: layouts/base.njk
+bodyClass: is-post
+---
+{%- set topics = tags | topicsOnly -%}
+{%- set lead = (topics[0] | topicMeta) if topics.length else ("html" | topicMeta) -%}
+<article class="post" data-pagefind-body>
+	<header class="post-header">
+		<div class="wrap">
+			<nav class="breadcrumbs" aria-label="Breadcrumb" data-pagefind-ignore>
+				<ol role="list">
+					<li><a href="/">Home</a></li>
+					<li><a href="/articles/">Articles</a></li>
+					{% if topics.length %}<li><a href="/topics/{{ topics[0] | slugify }}/">{{ lead.label }}</a></li>{% endif %}
+				</ol>
+			</nav>
+			{% if draft %}<p class="draft-flag" data-pagefind-ignore>Draft · not visible on the live site</p>{% endif %}
+			<h1 class="post-header__title">{{ title }}</h1>
+			{% if description %}<p class="post-header__dek">{{ description }}</p>{% endif %}
+			<div class="post-header__meta" data-pagefind-ignore>
+				<p class="post-header__byline">
+					<span>By <strong>{{ site.author.name }}</strong></span>
+					<span aria-hidden="true">·</span>
+					<time datetime="{{ page.date | isoDate }}">{{ page.date | readableDate }}</time>
+					<span aria-hidden="true">·</span>
+					<span>{{ content | readingTime }}</span>
+				</p>
+				<ul class="topic-labels" role="list">
+					{%- for t in topics %}
+					<li><a class="topic-label" data-color="{{ (t | topicMeta).color }}" href="/topics/{{ t | slugify }}/">{{ (t | topicMeta).label }}</a></li>
+					{%- endfor %}
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	{# Hidden metadata for Pagefind search filters #}
+	<div hidden>
+		{%- for t in topics %}<span data-pagefind-filter="topic">{{ (t | topicMeta).label }}</span>{% endfor %}
+		{%- for l in languages %}<span data-pagefind-filter="language">{{ l }}</span>{% endfor %}
+		<span data-pagefind-meta="date">{{ page.date | shortDate }}</span>
+		<span data-pagefind-meta="color">{{ lead.color }}</span>
+		<span data-pagefind-sort="date">{{ page.date | isoDate }}</span>
+	</div>
+
+	<div class="wrap post-layout">
+		<div class="prose">
+			{{ content | safe }}
+		</div>
+		<aside class="post-aside" data-pagefind-ignore>
+			<div class="post-aside__sticky">
+				{%- if languages %}
+				<section class="aside-box">
+					<h2 class="aside-box__title">Stack</h2>
+					<ul class="lang-list" role="list">{% for l in languages %}<li><span class="lang lang--lg">{{ l }}</span></li>{% endfor %}</ul>
+				</section>
+				{%- endif %}
+				{%- if browserSupport %}
+				<section class="aside-box">
+					<h2 class="aside-box__title">Browser support</h2>
+					<p>{{ browserSupport }}</p>
+				</section>
+				{%- endif %}
+				<nav class="aside-box toc" aria-label="On this page" data-toc hidden>
+					<h2 class="aside-box__title">On this page</h2>
+					<ol role="list"></ol>
+				</nav>
+			</div>
+		</aside>
+	</div>
+</article>
+
+{%- set relatedPosts = collections.posts | related({ url: page.url, tags: tags }) -%}
+{%- if relatedPosts.length %}
+<section class="related" aria-labelledby="related-title">
+	<div class="wrap">
+		<div class="section-head"><h2 id="related-title" class="section-title">Keep reading</h2></div>
+		<div class="card-grid">
+			{%- for post in relatedPosts %}{% include "partials/card.njk" %}{% endfor %}
+		</div>
+	</div>
+</section>
+{%- endif %}

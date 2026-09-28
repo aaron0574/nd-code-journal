@@ -1,0 +1,37 @@
+# Netlify configuration — https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  command = "npm run build"
+  publish = "_site"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Deploy previews and branch deploys also build draft articles (draft: true),
+# so you can review them on a private preview link before publishing.
+# Production (CONTEXT=production) always leaves drafts out.
+# See the "drafts" preprocessor in eleventy.config.js.
+
+# --- Headers --------------------------------------------------------------
+
+# Baseline security headers for every page
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Fonts never change once published — cache for a year
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# The feed should be re-checked often by readers and Mailchimp
+[[headers]]
+  for = "/feed.xml"
+  [headers.values]
+    Content-Type = "application/atom+xml; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"

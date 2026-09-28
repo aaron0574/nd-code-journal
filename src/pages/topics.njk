@@ -1,0 +1,20 @@
+---
+layout: layouts/page.njk
+permalink: /topics/
+title: Topics
+eyebrow: Browse
+description: Articles grouped by what they're about.
+---
+<ul class="topic-grid topic-grid--all" role="list">
+	{%- for t in collections.topics %}
+	{%- set meta = t.name | topicMeta %}
+	<li class="topic-tile" data-color="{{ meta.color }}">
+		<h2><a href="/topics/{{ t.slug }}/">{{ meta.label }}</a></h2>
+		<p>{{ meta.description }}</p>
+		<ul role="list">
+			{%- for p in t.posts | limit(3) %}<li><a href="{{ p.url }}">{{ p.data.title }}</a></li>{% endfor %}
+		</ul>
+		<span class="topic-tile__count">{{ t.count }} article{{ "s" if t.count != 1 }}</span>
+	</li>
+	{%- endfor %}
+</ul>

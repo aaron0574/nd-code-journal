@@ -1,0 +1,50 @@
+---
+layout: layouts/page.njk
+permalink: /articles/
+title: All articles
+eyebrow: The archive
+description: Every code example in one place. Filter by topic or language, or type to narrow things down instantly.
+---
+<div class="filters" data-filters hidden>
+	<div class="filters__row">
+		<label class="filters__search">
+			<span class="visually-hidden">Filter articles</span>
+			<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path d="M3 5h18M6 12h12M10 19h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+			<input type="search" data-filter-text placeholder="Filter by keyword…">
+		</label>
+		<label class="filters__select">
+			<span>Language</span>
+			<select data-filter-lang>
+				<option value="">Any</option>
+				{%- for l in collections.languages %}<option value="{{ l }}">{{ l }}</option>{% endfor %}
+			</select>
+		</label>
+		<label class="filters__select">
+			<span>Sort</span>
+			<select data-filter-sort>
+				<option value="new">Newest</option>
+				<option value="old">Oldest</option>
+				<option value="az">A → Z</option>
+			</select>
+		</label>
+	</div>
+	<fieldset class="filters__topics">
+		<legend class="visually-hidden">Topics</legend>
+		<ul class="toggle-list" role="list">
+			<li><button type="button" class="toggle" data-topic="" aria-pressed="true">All</button></li>
+			{%- for t in collections.topics %}
+			<li><button type="button" class="toggle" data-color="{{ (t.name | topicMeta).color }}" data-topic="{{ t.name }}" aria-pressed="false">{{ (t.name | topicMeta).label }} <span class="count">{{ t.count }}</span></button></li>
+			{%- endfor %}
+		</ul>
+	</fieldset>
+	<p class="filters__status" role="status" aria-live="polite" data-filter-status></p>
+</div>
+
+<div class="card-grid" data-card-grid>
+	{%- for post in collections.posts %}{% include "partials/card.njk" %}{% endfor %}
+</div>
+<div class="empty" data-filter-empty hidden>
+	<p class="empty__title">Nothing matches those filters.</p>
+	<p><button type="button" class="link-button" data-filter-reset>Reset the filters</button> or try a <a href="/search/">full-text search</a>.</p>
+</div>
+<script type="module" src="/assets/js/filters.js"></script>

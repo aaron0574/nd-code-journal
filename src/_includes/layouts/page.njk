@@ -1,0 +1,13 @@
+---
+layout: layouts/base.njk
+---
+<header class="page-hero">
+	<div class="wrap">
+		{% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+		<h1 class="page-hero__title">{{ title }}</h1>
+		{% if description %}<p class="page-hero__dek">{{ description }}</p>{% endif %}
+	</div>
+</header>
+<div class="wrap page-body">
+	{{ content | safe }}
+</div>

@@ -1,0 +1,31 @@
+<footer class="site-footer">
+	<div class="wrap site-footer__inner">
+		<div class="site-footer__about">
+			<a class="brand brand--footer" href="/">
+				<span class="brand__name">{{ site.title }}</span>
+			</a>
+			<p>{{ site.author.bio }}</p>
+		</div>
+		<nav aria-label="Footer">
+			<h2 class="site-footer__heading">Browse</h2>
+			<ul role="list">
+				<li><a href="/articles/">All articles</a></li>
+				<li><a href="/topics/">Topics</a></li>
+				<li><a href="/search/">Search</a></li>
+				<li><a href="/feed.xml">RSS feed</a></li>
+			</ul>
+		</nav>
+		<nav aria-label="Popular topics">
+			<h2 class="site-footer__heading">Popular topics</h2>
+			<ul role="list">
+				{%- for t in collections.topics | limit(6) %}
+				<li><a href="/topics/{{ t.slug }}/">{{ (t.name | topicMeta).label }}</a></li>
+				{%- endfor %}
+			</ul>
+		</nav>
+	</div>
+	<div class="wrap site-footer__legal">
+		<p>&copy; {% year %} {{ site.author.name }}. Code samples are free to use under the MIT license.</p>
+		<p>Personal site; not an official publication of the University of Notre Dame.</p>
+	</div>
+</footer>

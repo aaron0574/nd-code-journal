@@ -1,0 +1,23 @@
+---
+layout: layouts/page.njk
+permalink: /search/
+title: Search
+eyebrow: Find it fast
+description: Full-text search across every article and code sample. Narrow results by topic or language.
+---
+<div class="search" data-search>
+	<form class="search__form" role="search" data-search-form>
+		<label class="visually-hidden" for="search-q">Search</label>
+		<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+		<input id="search-q" name="q" type="search" placeholder="Search articles and code…" autocomplete="off" data-search-input>
+	</form>
+	<div class="search__layout">
+		<aside class="search__filters" data-search-filters aria-label="Search filters"></aside>
+		<div>
+			<p class="search__status" role="status" aria-live="polite" data-search-status></p>
+			<ol class="search__results" role="list" data-search-results></ol>
+		</div>
+	</div>
+	<noscript><p>Search needs JavaScript. You can still <a href="/articles/">browse all articles</a>.</p></noscript>
+</div>
+<script type="module" src="/assets/js/search.js"></script>

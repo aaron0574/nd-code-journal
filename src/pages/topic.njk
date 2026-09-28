@@ -1,0 +1,16 @@
+---
+layout: layouts/page.njk
+pagination:
+  data: collections.topics
+  size: 1
+  alias: topic
+permalink: "/topics/{{ topic.slug }}/"
+eleventyComputed:
+  title: "{{ (topic.name | topicMeta).label }}"
+  description: "{{ (topic.name | topicMeta).description }}"
+  eyebrow: "Topic · {{ topic.count }} article{{ 's' if topic.count != 1 }}"
+---
+<div class="card-grid">
+	{%- for post in topic.posts %}{% include "partials/card.njk" %}{% endfor %}
+</div>
+<p class="page-footer-link"><a class="link-arrow" href="/topics/">All topics</a></p>
