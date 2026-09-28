@@ -30,9 +30,9 @@ export default {
 	 */
 	comments: {
 		repo: "aaron0574/nd-code-journal",
-		repoId: "",
+		repoId: "R_kgDOUwr_yw",
 		category: "Comments",
-		categoryId: "",
+		categoryId: "DIC_kwDOUwr_y84DGmM-",
 	},
 
 	nav: [
