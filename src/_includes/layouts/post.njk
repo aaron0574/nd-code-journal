@@ -70,6 +70,25 @@ bodyClass: is-post
 	</div>
 </article>
 
+{%- if site.comments.repoId and site.comments.categoryId and not draft %}
+<section class="comments" aria-labelledby="comments-title" data-pagefind-ignore>
+	<div class="wrap">
+		<div class="comments__inner">
+			<div class="section-head"><h2 id="comments-title" class="section-title">Discussion</h2></div>
+			<p class="comments__intro">Questions, improvements, or a different approach? Comments use GitHub Discussions, so you'll sign in with a GitHub account, and code blocks work just like on GitHub.</p>
+			<div class="comments__embed"
+				data-giscus
+				data-repo="{{ site.comments.repo }}"
+				data-repo-id="{{ site.comments.repoId }}"
+				data-category="{{ site.comments.category }}"
+				data-category-id="{{ site.comments.categoryId }}">
+				<noscript><p>Comments need JavaScript. You can also <a href="https://github.com/{{ site.comments.repo }}/discussions">join the discussion on GitHub</a>.</p></noscript>
+			</div>
+		</div>
+	</div>
+</section>
+{%- endif %}
+
 {%- set relatedPosts = collections.posts | related({ url: page.url, tags: tags }) -%}
 {%- if relatedPosts.length %}
 <section class="related" aria-labelledby="related-title">

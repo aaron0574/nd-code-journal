@@ -24,6 +24,17 @@ export default {
 		url: "https://www.nd.edu",
 		bio: "I design and build websites for the University of Notre Dame. This journal collects the snippets, patterns, and small tools that come out of that work so they're easy to find again — for me and for you.",
 	},
+	/**
+	 * Comments via Giscus (GitHub Discussions) — https://giscus.app
+	 * The comment box only appears once repoId and categoryId are filled in.
+	 */
+	comments: {
+		repo: "aaron0574/nd-code-journal",
+		repoId: "",
+		category: "Comments",
+		categoryId: "",
+	},
+
 	nav: [
 		{ label: "Articles", url: "/articles/" },
 		{ label: "Topics", url: "/topics/" },

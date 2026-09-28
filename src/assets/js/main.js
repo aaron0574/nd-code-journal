@@ -15,8 +15,51 @@ if (toggle) {
 		root.dataset.theme = next;
 		try { localStorage.setItem("theme", next); } catch (e) {}
 		sync();
+		setGiscusTheme();
 	});
 	systemDark.addEventListener("change", sync);
+}
+
+/* Comments (Giscus) ------------------------------------------------------
+   Loaded only when the comment section scrolls near the viewport, and kept
+   in step with the site's light/dark theme. */
+const giscusHost = document.querySelector("[data-giscus]");
+const giscusTheme = () => {
+	const t = document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+	return t === "dark" ? "dark_dimmed" : "light";
+};
+const setGiscusTheme = () => {
+	const frame = document.querySelector("iframe.giscus-frame");
+	frame?.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme() } } }, "https://giscus.app");
+};
+if (giscusHost) {
+	const load = () => {
+		const s = document.createElement("script");
+		s.src = "https://giscus.app/client.js";
+		s.async = true;
+		s.crossOrigin = "anonymous";
+		const attrs = {
+			repo: giscusHost.dataset.repo,
+			"repo-id": giscusHost.dataset.repoId,
+			category: giscusHost.dataset.category,
+			"category-id": giscusHost.dataset.categoryId,
+			mapping: "pathname",
+			strict: "1",
+			"reactions-enabled": "1",
+			"emit-metadata": "0",
+			"input-position": "top",
+			theme: giscusTheme(),
+			lang: "en",
+			loading: "lazy",
+		};
+		for (const [k, v] of Object.entries(attrs)) s.setAttribute(`data-${k}`, v);
+		giscusHost.append(s);
+	};
+	const io = new IntersectionObserver((entries) => {
+		if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+	}, { rootMargin: "600px 0px" });
+	io.observe(giscusHost);
+	matchMedia("(prefers-color-scheme: dark)").addEventListener("change", setGiscusTheme);
 }
 
 /* Press "/" to jump to search --------------------------------------------- */

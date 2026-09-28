@@ -114,6 +114,19 @@ Or, for a post that uses no shortcodes, add `templateEngineOverride: md` to its 
 - **Fonts** are self-hosted variable fonts (Ubuntu for headings, Open Sans for body text, JetBrains Mono for code) copied from `@fontsource-variable` packages at build time — no third-party requests.
 - **Colour** follows the Notre Dame palette (navy, metallic gold, warm white). Topic colours appear only as small markers and thin rules, never as large fills.
 
+## Comments (Giscus)
+
+Comments and reactions use [Giscus](https://giscus.app), which stores each article's thread as a GitHub Discussion in this repo. The comment section only appears once the IDs in `site.comments` (`src/_data/site.js`) are filled in, and it's left off drafts.
+
+One-time setup:
+
+1. Repo **Settings → General → Features**: tick **Discussions**.
+2. In the repo's **Discussions** tab, add a category named **Comments** with the **Announcement** format, so only you and Giscus can start threads.
+3. Install the Giscus app on this repo: <https://github.com/apps/giscus>.
+4. On <https://giscus.app>, enter `aaron0574/nd-code-journal` and pick the **Comments** category. Copy `data-repo-id` and `data-category-id` into `repoId` and `categoryId` in `site.js`.
+
+Each article gets its own thread (matched by URL path) the first time someone comments. You can moderate, edit or lock threads from GitHub. The embed loads only when readers scroll near it, and it switches light/dark with the site's theme toggle.
+
 ## Deploying to Netlify
 
 Everything Netlify needs is in `netlify.toml` (build command, publish folder, Node version, headers).

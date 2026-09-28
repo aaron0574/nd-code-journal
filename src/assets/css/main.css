@@ -450,6 +450,12 @@ input, select { font: inherit; color: inherit; }
 
 .related { margin-top: 5rem; }
 
+/* Comments (Giscus) */
+.comments { margin-top: 5rem; }
+.comments__inner { max-width: 55rem; }
+.comments__intro { color: var(--muted); font-size: 0.95rem; max-width: 44rem; margin-bottom: 1.75rem; }
+.comments__embed { min-height: 12rem; }
+
 /* 9. Code blocks & demos --------------------------------------------------- */
 .code, .demo { margin: 2rem 0; border-radius: var(--radius); overflow: hidden; background: var(--code-bg); border: 1px solid var(--code-line); }
 .code__bar, .demo__bar {
