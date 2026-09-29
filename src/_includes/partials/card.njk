@@ -1,4 +1,4 @@
-{#- Expects `post` and optional `variant` ("feature") -#}
+{#- Expects `post` and optional `variant` ("feature" | "row") -#}
 {%- set topics = post.data.tags | topicsOnly -%}
 {%- set topicText = topics | join(' ') -%}
 {%- set searchText = [post.data.title, post.data.description, topicText, post.data.languages | join(' ')] | join(' ') -%}
@@ -9,6 +9,9 @@
 	data-date="{{ post.date | isoDate }}"
 	data-title="{{ post.data.title | lower }}"
 	data-text="{{ searchText | lower }}">
+	{%- if variant == "row" %}
+	<time class="card__date" datetime="{{ post.date | isoDate }}"><span class="card__day">{{ post.date | monthDay }}</span><span class="card__year">{{ post.date | year }}</span></time>
+	{%- endif %}
 	{%- if topics.length %}
 	<ul class="topic-labels" role="list">
 		{%- for t in topics | limit(2) %}
@@ -19,9 +22,11 @@
 	<h3 class="card__title"><a href="{{ post.url }}">{{ post.data.title }}</a></h3>
 	{%- if post.data.description %}<p class="card__excerpt">{{ post.data.description }}</p>{% endif %}
 	<p class="card__meta">
+		{%- if variant != "row" %}
 		<time datetime="{{ post.date | isoDate }}">{{ post.date | shortDate }}</time>
 		<span aria-hidden="true">·</span>
-		<span>{{ post.content | readingTime }}</span>
+		{%- endif %}
+		<span class="card__time">{{ post.content | readingTime }}</span>
 		{%- if post.data.languages %}
 		<span class="card__langs">{% for l in post.data.languages %}<span class="lang">{{ l }}</span>{% endfor %}</span>
 		{%- endif %}

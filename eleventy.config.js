@@ -110,6 +110,10 @@ export default async function (eleventyConfig) {
 	eleventyConfig.addFilter("shortDate", (date) =>
 		new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(date)
 	);
+	eleventyConfig.addFilter("monthDay", (date) =>
+		new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" }).format(date)
+	);
+	eleventyConfig.addFilter("year", (date) => String(new Date(date).getUTCFullYear()));
 	eleventyConfig.addFilter("isoDate", (date) => new Date(date).toISOString().slice(0, 10));
 
 	eleventyConfig.addFilter("readingTime", (content = "") => {

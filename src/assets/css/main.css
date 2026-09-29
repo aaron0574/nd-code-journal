@@ -18,6 +18,7 @@
 /* 1. Tokens ---------------------------------------------------------------- */
 :root {
 	/* Notre Dame brand palette */
+	--navy-dark: #0e1a2d;
 	--navy: #0c2340;
 	--navy-light: #143865;
 	--navy-bright: #1c4f8f;
@@ -177,16 +178,16 @@ input, select { font: inherit; color: inherit; }
 /* Highlighter: a gold marker stroke across the lower half of the text.
    Use <span class="highlight"> in templates, or <mark> inside articles. */
 .highlight {
-	--hl: color-mix(in srgb, var(--gold-light) 70%, transparent);
+	--hl: color-mix(in srgb, var(--gold-light) 55%, transparent);
 	color: inherit;
-	background-image: linear-gradient(transparent 56%, var(--hl) 56% 92%, transparent 92%);
+	background-image: linear-gradient(transparent 65%, var(--hl) 65% 92%, transparent 92%);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	padding-inline: 0.06em;
 	-webkit-box-decoration-break: clone;
 	box-decoration-break: clone;
 }
-:root[data-theme="dark"] :is(.highlight, .prose mark) { --hl: color-mix(in srgb, var(--gold) 42%, transparent); }
+:root[data-theme="dark"] :is(.highlight, .prose mark) { --hl: color-mix(in srgb, var(--gold) 55%, transparent); }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) :is(.highlight, .prose mark) { --hl: color-mix(in srgb, var(--gold) 42%, transparent); } }
 /* The masthead's highlight draws itself in once, left to right */
 @media (prefers-reduced-motion: no-preference) {
@@ -275,19 +276,20 @@ input, select { font: inherit; color: inherit; }
 	.header-search kbd { display: none; }
 }
 
-.site-footer { margin-top: 7rem; background: var(--navy); color: #c3cad6; border-top: 3px solid var(--gold); }
+.site-footer { margin-top: 5rem; background: var(--navy); color: #c3cad6; border-top: 2px solid var(--gold); }
 :root[data-theme="dark"] .site-footer { background: #07101d; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .site-footer { background: #07101d; } }
 .site-footer a { color: #fff; text-decoration: none; }
 .site-footer a:hover { text-decoration: underline; }
-.site-footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; padding-block: 3.5rem 2.5rem; }
-.site-footer__about p { margin-top: 0.9rem; max-width: 44ch; font-size: 0.95rem; line-height: 1.6; }
-.brand--footer .brand__name { color: #fff; font-size: 1.25rem; }
-.site-footer__heading { font: 600 var(--step--2)/1 var(--font-default); text-transform: uppercase; letter-spacing: 0.14em; color: var(--gold-light); margin-bottom: 1rem; }
-.site-footer nav li + li { margin-top: 0.45rem; }
-.site-footer nav a { font-size: 0.95rem; }
-.site-footer__legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; border-top: 1px solid rgb(255 255 255 / 0.12); padding-block: 1.25rem 2rem; font-size: 0.82rem; color: #8f9bb0; }
-@media (max-width: 52rem) { .site-footer__inner { grid-template-columns: 1fr 1fr; gap: 2rem; } .site-footer__about { grid-column: 1 / -1; } }
+.site-footer__inner { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 1.5rem 3rem; padding-block: 2.25rem 1.5rem; }
+.site-footer__about { max-width: 30rem; }
+.site-footer__about p { margin-top: 0.6rem; font-size: 0.9rem; line-height: 1.55; }
+.brand--footer .brand__name { color: #fff; font-size: 1.1rem; }
+.site-footer__nav ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
+.site-footer__nav a { font-size: 0.92rem; }
+.site-footer__coffee { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--gold-light) !important; }
+.site-footer__coffee:hover { color: #fff !important; }
+.site-footer__legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.35rem 2rem; border-top: 1px solid rgb(255 255 255 / 0.12); padding-block: 1rem 1.5rem; font-size: 0.8rem; color: #8f9bb0; }
 
 /* 5. Components ------------------------------------------------------------ */
 /* Topic label: small caps text with a colour marker */
@@ -335,6 +337,46 @@ input, select { font: inherit; color: inherit; }
 .card--feature .card__title { font-size: var(--step-2); font-weight: 700; line-height: 1.2; }
 .card--feature .card__excerpt { -webkit-line-clamp: 4; }
 
+/* Article list (All articles page): one article per row, easy to scan */
+.post-list { border-bottom: 1px solid var(--line-strong); }
+.filters:has(+ .post-list) { margin-bottom: 1.5rem; padding-bottom: 0; border-bottom: 0; }
+.card--row {
+	display: grid;
+	grid-template-columns: 6.5rem minmax(0, 1fr) 10rem;
+	grid-template-areas:
+		"date topics  meta"
+		"date title   meta"
+		"date excerpt meta";
+	align-content: start;
+	column-gap: clamp(1.25rem, 3vw, 2.75rem);
+	row-gap: 0.55rem;
+	padding: 1.75rem 0 1.9rem;
+	border-top: 1px solid var(--line-strong);
+	transition: background-color 0.25s var(--ease);
+}
+.card--row::before { top: -1px; }
+.card__date { grid-area: date; display: flex; flex-direction: column; gap: 0.15rem; padding-top: 0.1rem; }
+.card__day { font: 700 1.1rem/1.15 var(--font-heading); color: var(--heading); white-space: nowrap; }
+.card__year { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.04em; }
+.card--row .topic-labels { grid-area: topics; }
+.card--row .card__title { grid-area: title; font-size: var(--step-2); line-height: 1.2; }
+.card--row .card__excerpt { grid-area: excerpt; max-width: 62ch; -webkit-line-clamp: 2; }
+.card--row .card__meta {
+	grid-area: meta; margin: 0; padding-top: 0.15rem;
+	flex-direction: column; align-items: flex-end; align-self: start; gap: 0.6rem; text-align: right;
+}
+.card--row .card__langs { margin-left: 0; flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 48rem) {
+	.card--row {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas: "date" "topics" "title" "excerpt" "meta";
+		row-gap: 0.5rem; padding-block: 1.5rem;
+	}
+	.card__date { flex-direction: row; align-items: baseline; gap: 0.4rem; }
+	.card__day { font-size: 0.95rem; }
+	.card--row .card__meta { flex-direction: row; align-items: center; justify-content: space-between; width: 100%; text-align: left; }
+}
+
 /* Callouts */
 .callout {
 	--c: var(--navy-bright);
@@ -352,29 +394,61 @@ input, select { font: inherit; color: inherit; }
 .empty__title { font-family: var(--font-heading); font-size: var(--step-1); color: var(--heading); font-weight: 700; margin-bottom: 0.4rem; }
 
 /* 6. Home ------------------------------------------------------------------ */
-.masthead { background: var(--surface-alt); border-bottom: 1px solid var(--line); }
-.masthead__inner {
-	display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-	gap: clamp(2rem, 6vw, 6rem); align-items: center;
-	padding-block: clamp(3rem, 7vw, 6rem);
+/* Homepage masthead: a slow, subtle navy gradient that drifts across the band.
+   Based on the classic "animated gradient background" technique: an oversized
+   gradient whose background-position is animated. */
+.masthead {
+	--masthead-ink: #e4e9f1;
+	background: linear-gradient(-45deg, var(--navy-dark), var(--navy), var(--navy-light), var(--navy-dark));
+	background-size: 400% 400%;
+	color: var(--masthead-ink);
+	border-bottom: 1px solid var(--line);
 }
-.masthead__title {
-	font-size: min(var(--step-5), 3.6rem); font-weight: 700; line-height: 1.08; letter-spacing: -0.02em;
-	margin-block: 1rem 1.25rem;
+@media (prefers-reduced-motion: no-preference) {
+	.masthead { animation: masthead-drift 10s ease-in-out infinite alternate; }
 }
-.masthead__line { display: block; }
-.masthead__dek { font-size: var(--step-1); line-height: 1.55; max-width: 36rem; color: var(--ink); }
-.masthead__intro .search-field { margin-top: 2rem; }
-.masthead__stats { margin-top: 1rem; font-size: 0.85rem; color: var(--muted); }
-.masthead__feature .eyebrow { margin-bottom: 0.9rem; }
-@media (max-width: 56rem) { .masthead__inner { grid-template-columns: minmax(0, 1fr); } }
+@keyframes masthead-drift {
+	from { background-position: 0% 50%; }
+	to   { background-position: 100% 50%; }
+}
+.masthead { padding-block: 0 clamp(3rem, 7vw, 5rem); }
+
+/* One-line intro above the featured article */
+.masthead__intro { font-size: 0.95rem; line-height: 1.5; color: #b9c5d6; padding-block: 2.25rem; max-width: none; text-align: center; }
+.masthead__intro strong { color: var(--gold-light); font-weight: 600; }
+
+/* Featured (latest) article */
+.feature { border:1px solid rgb(255 255 255 / 0.14); padding:clamp(1.75rem, 5vw, 2.5rem); border-radius: var(--radius); }
+.feature__labels { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-bottom: 1.25rem; }
+.feature__kicker {
+	font: 600 var(--step--2)/1.3 var(--font-default); letter-spacing: 0.14em; text-transform: uppercase;
+	color: var(--navy); background: var(--gold-light); padding: 0.3rem 0.55rem;
+}
+.masthead .topic-label { color: #c9d3e1; }
+.masthead .topic-label:hover .label { color: #fff; }
+.feature__grid {
+	display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+	gap: clamp(1.5rem, 5vw, 5rem); align-items: end;
+}
+@media (max-width: 56rem) { .feature__grid { grid-template-columns: minmax(0, 1fr); align-items: start; } }
+.feature__title { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.5rem); line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance; }
+.feature__title a { color: #fff; text-decoration: none; background-image: linear-gradient(var(--gold), var(--gold)); background-size: 0% 3px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size 0.4s var(--ease); }
+.feature__title a:hover, .feature__title a:focus-visible { background-size: 100% 3px; }
+.feature__desc { font-size: var(--step-1); line-height: 1.55; color: var(--masthead-ink); }
+.feature__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin-top: 1.1rem; font-size: 0.88rem; color: #a9b7cc; }
+.feature__langs { display: inline-flex; gap: 0.3rem; margin-left: 0.4rem; }
+.masthead .lang { border-color: rgb(255 255 255 / 0.2); color: #c9d3e1; }
+.feature__cta { margin-top: 1.5rem; }
+.btn--gold { background: var(--gold-light); color: var(--navy); }
+.btn--gold:hover { background: #e8d192; }
+@media (prefers-reduced-motion: no-preference) { .btn--gold span { display: inline-block; transition: transform 0.2s var(--ease); } .btn--gold:hover span { transform: translateX(3px); } }
 
 .topic-bar { border-bottom: 1px solid var(--line); }
 .topic-bar__inner { display: flex; align-items: center; gap: 1.75rem; min-height: 3.5rem; overflow-x: auto; }
 .topic-bar__label { font: 600 var(--step--2)/1 var(--font-default); letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-text); flex: none; }
 .topic-bar ul { display: flex; gap: 1.5rem; }
 
-.home-section { padding-top: clamp(3rem, 6vw, 4.5rem); }
+.home-section { padding-top: clamp(3rem, 6vw, 6rem); }
 
 .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr)); gap: 1.5rem; }
 .topic-tile {
@@ -426,10 +500,6 @@ input, select { font: inherit; color: inherit; }
 .about__intro { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; margin-bottom: 1rem; }
 @media (max-width: 40rem) { .about__intro { grid-template-columns: minmax(0, 1fr); } .about__photo { max-width: 12rem; } }
 .about__photo { margin: 0; position: relative; aspect-ratio: 1; }
-.about__photo::after { /* offset gold frame */
-	content: ""; position: absolute; inset: 0.75rem -0.75rem -0.75rem 0.75rem; z-index: -1;
-	border: 2px solid var(--accent);
-}
 .about__photo img, .about__initials { display: block; width: 100%; height: 100%; object-fit: cover; }
 .about__initials {
 	display: grid; place-items: center; background: var(--navy); color: var(--gold-light);
@@ -452,10 +522,7 @@ input, select { font: inherit; color: inherit; }
 .about :is(.about__features, .about__tools ul, .about__links) li + li { margin-top: 0; }
 .about__coffee { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 0.95rem; color: var(--muted); }
 
-/* Footer: coffee link */
-.site-footer__coffee { margin-top: 1.25rem !important; font-size: 0.9rem; }
-.site-footer__coffee a { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--gold-light); }
-.site-footer__coffee a:hover { color: #fff; }
+
 
 /* 8. Post ------------------------------------------------------------------ */
 .post-header { background: var(--surface-alt); border-bottom: 1px solid var(--line); padding-block: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 2.75rem); }

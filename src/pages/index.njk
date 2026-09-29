@@ -4,25 +4,37 @@ permalink: /
 bodyClass: is-home
 ---
 {%- set featured = collections.posts | first -%}
-<section class="masthead">
-	<div class="wrap masthead__inner">
-		<div class="masthead__intro">
-			<p class="eyebrow">{{ site.tagline }}</p>
-			<h1 class="masthead__title"><span class="masthead__line">Built for <span class="highlight highlight--draw">everyone</span>.</span> <span class="masthead__line">Then pushed further.</span></h1>
-			<p class="masthead__dek">At Notre Dame, a website has to be accessible, usable, and understandable first. Only then do we push the design and functionality. Here we share the components, CSS, and hard-won solutions that let us do both.</p>
-			<form class="search-field search-field--lg" action="/search/" method="get" role="search">
-				<label class="visually-hidden" for="hero-q">Search articles and code</label>
-				<svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.75"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/></svg>
-				<input id="hero-q" name="q" type="search" placeholder="Search for “accordion,” “clamp,” or “fetch”" autocomplete="off">
-				<button type="submit" class="btn btn--primary">Search</button>
-			</form>
-			<p class="masthead__stats">{{ collections.posts.length }} articles <span aria-hidden="true">·</span> {{ collections.topics.length }} topics <span aria-hidden="true">·</span> {{ collections.languages.length }} languages</p>
-		</div>
+<section class="masthead" aria-labelledby="featured-title">
+	<div class="wrap">
+		<h1 class="visually-hidden">{{ site.title }}</h1>
+		<p class="masthead__intro"><strong>{{ site.tagline }}.</strong> Accessible components, CSS, and hard-won solutions from building the University's websites.</p>
 		{%- if featured %}
-		<aside class="masthead__feature" aria-labelledby="latest-label">
-			<p class="eyebrow" id="latest-label">Latest article</p>
-			{% set post = featured %}{% set variant = "feature" %}{% include "partials/card.njk" %}{% set variant = "" %}
-		</aside>
+		{%- set topics = featured.data.tags | topicsOnly %}
+		<article class="feature">
+			<div class="feature__labels">
+				<span class="feature__kicker">Latest article</span>
+				<ul class="topic-labels" role="list">
+					{%- for t in topics | limit(2) %}
+					<li><a class="topic-label" data-color="{{ (t | topicMeta).color }}" href="/topics/{{ t | slugify }}/"><span class="label">{{ (t | topicMeta).label }}</span></a></li>
+					{%- endfor %}
+				</ul>
+			</div>
+			<div class="feature__grid">
+				<h2 class="feature__title" id="featured-title"><a href="{{ featured.url }}">{{ featured.data.title }}</a></h2>
+				<div class="feature__body">
+					{%- if featured.data.description %}<p class="feature__desc">{{ featured.data.description }}</p>{% endif %}
+					<p class="feature__meta">
+						<time datetime="{{ featured.date | isoDate }}">{{ featured.date | readableDate }}</time>
+						<span aria-hidden="true">·</span>
+						<span>{{ featured.content | readingTime }}</span>
+						{%- if featured.data.languages %}
+						<span class="feature__langs">{% for l in featured.data.languages %}<span class="lang">{{ l }}</span>{% endfor %}</span>
+						{%- endif %}
+					</p>
+					<a class="btn btn--gold feature__cta" href="{{ featured.url }}" aria-describedby="featured-title">Read the article <span aria-hidden="true">→</span></a>
+				</div>
+			</div>
+		</article>
 		{%- endif %}
 	</div>
 </section>
@@ -41,7 +53,7 @@ bodyClass: is-home
 <section class="home-section" aria-labelledby="latest-title">
 	<div class="wrap">
 		<div class="section-head">
-			<h2 id="latest-title" class="section-title"><span class="highlight">Recent articles</span></h2>
+			<h2 id="latest-title" class="section-title">Recent articles</h2>
 			<a class="link-arrow" href="/articles/">All articles</a>
 		</div>
 		<div class="card-grid">

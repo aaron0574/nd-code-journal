@@ -40,8 +40,10 @@ description: Filter by topic or language, or narrow the list by keyword.
 	<p class="filters__status" role="status" aria-live="polite" data-filter-status></p>
 </div>
 
-<div class="card-grid" data-card-grid>
+<div class="post-list" data-card-grid>
+	{%- set variant = "row" %}
 	{%- for post in collections.posts %}{% include "partials/card.njk" %}{% endfor %}
+	{%- set variant = "" %}
 </div>
 <div class="empty" data-filter-empty hidden>
 	<p class="empty__title">Nothing matches those filters.</p>
