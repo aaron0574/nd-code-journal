@@ -1,85 +1,85 @@
 ---
-title: "The spotlight accordion: an accordion that changes the image beside it"
+title: "The accordion group: an accordion that changes the image beside it"
 description: Build an exclusive accordion where opening an item cross-fades a matching photo or video, using <details name>, one CSS grid trick, and a few lines of JavaScript that listen for the toggle event.
-date: 2026-06-21
+date: 2026-09-03
 tags: [components, accessibility, css]
 languages: [html, css, js]
 browserSupport: "Exclusive accordions (<details name>) are Baseline 2024. Older browsers let more than one item open at a time, and the image follows whichever item was opened last."
 draft: false
 ---
 
-Our team originally built this component for the nd.edu homepage. We wanted a way to show more photos and video of campus without adding another carousel, and to make the page feel interactive without making it harder to use. You can see a version of it today in the **Notre Dame Values** section on [careers.nd.edu](https://careers.nd.edu/working-at-notre-dame/).
+Our team originally built this component for the nd.edu homepage. We wanted a way to show more photos and video of campus without adding another carousel. We also wanted to find opportunites for uses to interact with the content without making the site hard to use. You can see another version of accordion group in the **Notre Dame Values** section on [careers.nd.edu](https://careers.nd.edu/working-at-notre-dame/).
 
-The idea is simple. You have a short list of topics, and each one comes with a picture. When a reader opens a topic, its picture fades in next to it. We call it a **spotlight accordion**, because opening an item puts its image in the spotlight.
+The idea is simple. You have a short list of topics, and each one comes with a picture. When a reader opens a topic, its picture appears next to it. We call it an **accordion group**, because the items work as one group: opening one closes the others and brings its image forward.
 
-Try it first, then we'll build it one step at a time.
+Try it first, then we'll build it one step by step.
 
-{% demo "Spotlight accordion", 460 %}
-<div class="spotlight" data-spotlight>
-  <div class="spotlight__layout">
-    <div class="spotlight__list">
-      <details name="values" open data-spotlight-target="media-mission">
-        <summary>Catholic Mission</summary>
-        <p>Be a force for good and help advance Notre Dame's mission as a global Catholic research university.</p>
+{% demo "Accordion group", 460 %}
+<div class="accordion-group" data-accordion-group>
+  <div class="accordion-group__layout">
+    <div class="accordion-group__list">
+      <details name="values" open data-accordion-group-target="media-catholic">
+        <summary>Catholic</summary>
+        <p>At Notre Dame, faith informs and guides students' academic and spiritual journeys.</p>
       </details>
-      <details name="values" data-spotlight-target="media-community">
+      <details name="values" data-accordion-group-target="media-excellence">
+        <summary>Academic Excellence</summary>
+        <p>At Notre Dame, academic rigor and ethical reflection go hand in hand—preparing students to meet complex global challenges.</p>
+      </details>
+      <details name="values" data-accordion-group-target="media-research">
+        <summary>Research</summary>
+        <p>Our teacher-scholars and students grapple with enduring, fundamental questions about human existence and meaning, and develop effective solutions to our most urgent challenges.</p>
+      </details>
+      <details name="values" data-accordion-group-target="media-global">
+        <summary>Global</summary>
+        <p>Notre Dame's reach spans the globe through international partnerships and cross-cultural learning.</p>
+      </details>
+      <details name="values" data-accordion-group-target="media-community">
         <summary>Community</summary>
-        <p>Treat every person with dignity and respect.</p>
-      </details>
-      <details name="values" data-spotlight-target="media-collaboration">
-        <summary>Collaboration</summary>
-        <p>Work together with honesty, kindness and humility.</p>
-      </details>
-      <details name="values" data-spotlight-target="media-excellence">
-        <summary>Excellence</summary>
-        <p>Pursue the highest standards with a commitment to truth and service.</p>
-      </details>
-      <details name="values" data-spotlight-target="media-innovation">
-        <summary>Innovation</summary>
-        <p>Embrace opportunities with creativity and dedication.</p>
+        <p>At Notre Dame, we cultivate a true sense of belonging, honoring the dignity and unique gifts of every person.</p>
       </details>
     </div>
-    <div class="spotlight__media">
-      <figure id="media-mission" class="is-active"><div class="ph" style="--a:#0c2340;--b:#1c4f8f">Mission</div></figure>
-      <figure id="media-community"><div class="ph" style="--a:#143865;--b:#3f7cb8">Community</div></figure>
-      <figure id="media-collaboration"><div class="ph" style="--a:#8c7535;--b:#ddc278">Collaboration</div></figure>
-      <figure id="media-excellence"><div class="ph" style="--a:#0a843d;--b:#35b36a">Excellence</div></figure>
-      <figure id="media-innovation"><div class="ph" style="--a:#6b56a6;--b:#a893dd">Innovation</div></figure>
+    <div class="accordion-group__media">
+      <figure id="media-catholic" class="is-active"><div class="ph" style="--a:#0c2340;--b:#1c4f8f">Catholic</div></figure>
+      <figure id="media-excellence"><div class="ph" style="--a:#143865;--b:#3f7cb8">Academic Excellence</div></figure>
+      <figure id="media-research"><div class="ph" style="--a:#8c7535;--b:#ddc278">Research</div></figure>
+      <figure id="media-global"><div class="ph" style="--a:#0a843d;--b:#35b36a">Global</div></figure>
+      <figure id="media-community"><div class="ph" style="--a:#6b56a6;--b:#a893dd">Community</div></figure>
     </div>
   </div>
 </div>
 <style>
-  .spotlight { container-type: inline-size; }
-  .spotlight__layout { display: grid; gap: 1.5rem; }
-  .spotlight__media { display: grid; aspect-ratio: 3 / 2; order: -1; }
-  .spotlight__media > figure {
+  .accordion-group { container-type: inline-size; }
+  .accordion-group__layout { display: grid; gap: 1.5rem; }
+  .accordion-group__media { display: grid; aspect-ratio: 3 / 2; order: -1; }
+  .accordion-group__media > figure {
     grid-area: 1 / 1; margin: 0; border-radius: 6px; overflow: hidden;
     opacity: 0; visibility: hidden;
     transition: opacity .5s ease, visibility 0s linear .5s;
   }
-  .spotlight__media > figure.is-active { opacity: 1; visibility: visible; transition: opacity .5s ease, visibility 0s; }
-  @media (prefers-reduced-motion: reduce) { .spotlight__media > figure { transition: none; } }
-  .spotlight details { border-bottom: 1px solid #d6dadf; padding-inline: 1rem; color: #5f6368; transition: background-color .2s, color .2s; }
-  .spotlight details:is([open], :hover, :focus-within) { color: #0c2340; }
-  .spotlight details[open] { background: #f1f2f4; }
-  .spotlight summary { list-style: none; display: flex; justify-content: space-between; gap: 1rem; padding-block: 1rem; font-size: 1.15rem; font-weight: 700; cursor: pointer; }
-  .spotlight summary::-webkit-details-marker { display: none; }
-  .spotlight summary::after { content: "+"; font-weight: 400; }
-  .spotlight details[open] summary::after { content: "–"; }
-  .spotlight summary:focus-visible { outline: 2px solid #d39f10; outline-offset: 2px; }
-  .spotlight details p { margin: 0 0 1rem; color: #333; }
+  .accordion-group__media > figure.is-active { opacity: 1; visibility: visible; transition: opacity .5s ease, visibility 0s; }
+  @media (prefers-reduced-motion: reduce) { .accordion-group__media > figure { transition: none; } }
+  .accordion-group details { border-bottom: 1px solid #d6dadf; padding-inline: 1rem; color: #5f6368; transition: background-color .2s, color .2s; }
+  .accordion-group details:is([open], :hover, :focus-within) { color: #0c2340; }
+  .accordion-group details[open] { background: #f1f2f4; }
+  .accordion-group summary { list-style: none; display: flex; justify-content: space-between; gap: 1rem; padding-block: 1rem; font-size: 1.15rem; font-weight: 700; cursor: pointer; }
+  .accordion-group summary::-webkit-details-marker { display: none; }
+  .accordion-group summary::after { content: "+"; font-weight: 400; }
+  .accordion-group details[open] summary::after { content: "–"; }
+  .accordion-group summary:focus-visible { outline: 2px solid #d39f10; outline-offset: 2px; }
+  .accordion-group details p { margin: 0 0 1rem; color: #333; }
   @container (min-width: 36rem) {
-    .spotlight__layout { grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .spotlight__media { order: 0; aspect-ratio: auto; min-height: 18rem; }
+    .accordion-group__layout { grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .accordion-group__media { order: 0; aspect-ratio: auto; min-height: 18rem; }
   }
   .ph { display: grid; place-items: center; height: 100%; color: #fff; font: 700 1.4rem/1 system-ui, sans-serif; background: linear-gradient(135deg, var(--a), var(--b)); }
 </style>
 <script>
   const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
-  for (const group of document.querySelectorAll("[data-spotlight]")) {
-    const figures = group.querySelectorAll(".spotlight__media > figure");
+  for (const group of document.querySelectorAll("[data-accordion-group]")) {
+    const figures = group.querySelectorAll(".accordion-group__media > figure");
     const show = (details) => {
-      const target = document.getElementById(details.dataset.spotlightTarget);
+      const target = document.getElementById(details.dataset.accordionGroupTarget);
       if (!target) return;
       for (const figure of figures) {
         const active = figure === target;
@@ -101,7 +101,7 @@ Open a few items, then press **Expand** and try the **Phone** preset. On a narro
 
 ## What we're building
 
-Before writing any code, it helps to name the parts. A spotlight accordion has three:
+Before writing any code, it helps to name the parts. An accordion group has three:
 
 1. **A list of disclosures.** Each one has a short title the reader clicks and a bit of text that opens underneath.
 2. **A stack of media.** One photo or video for each item, all sitting in the same spot.
@@ -113,15 +113,15 @@ We'll handle each part with the simplest tool that does the job: HTML for the ac
 
 The accordion is built with `<details>` and `<summary>`. You get keyboard support, screen reader announcements and find-in-page from the browser without writing any JavaScript.
 
-Giving every `<details>` the **same `name`** turns them into a group where only one can be open at a time. That matters here, because only one image can be in the spotlight.
+Giving every `<details>` the **same `name`** turns them into a group where only one can be open at a time. That matters here, because only one image can be shown at a time.
 
 ```html
-<div class="spotlight__list">
-  <details name="values" open data-spotlight-target="media-mission">
+<div class="accordion-group__list">
+  <details name="values" open data-accordion-group-target="media-mission">
     <summary>Catholic Mission</summary>
     <p>Be a force for good and help advance Notre Dame's mission…</p>
   </details>
-  <details name="values" data-spotlight-target="media-community">
+  <details name="values" data-accordion-group-target="media-community">
     <summary>Community</summary>
     <p>Treat every person with dignity and respect.</p>
   </details>
@@ -133,10 +133,10 @@ Put `open` on the first item so the component never starts empty.
 
 ## Step 2: Pair each item with its media
 
-Each item needs to know which image belongs to it. The most reliable way is to say so directly: give every `<figure>` an `id`, and point to it from the matching `<details>` with a `data-spotlight-target` attribute.
+Each item needs to know which image belongs to it. The most reliable way is to say so directly: give every `<figure>` an `id`, and point to it from the matching `<details>` with a `data-accordion-group-target` attribute.
 
 ```html
-<div class="spotlight__media">
+<div class="accordion-group__media">
   <figure id="media-mission" class="is-active">
     <img src="mission.jpg" alt="A priest talks with two staff members outside." width="600" height="400">
   </figure>
@@ -158,16 +158,16 @@ Give the first figure the `is-active` class in the HTML. If JavaScript fails to 
 Every figure needs to sit in the same place so they can fade into one another. The usual approach is `position: absolute`, but there's a simpler way. Make the media container a grid, and put every figure in the **same cell**:
 
 ```css
-.spotlight__media {
+.accordion-group__media {
   display: grid;
 }
 
-.spotlight__media > figure {
+.accordion-group__media > figure {
   grid-area: 1 / 1;   /* every figure sits in row 1, column 1 */
   margin: 0;
 }
 
-.spotlight__media img {
+.accordion-group__media img {
   display: block;
   width: 100%;
   height: 100%;
@@ -182,14 +182,14 @@ Because the figures are still in normal layout, the container sizes itself corre
 Now hide every figure except the active one. Fading `opacity` gives us a smooth transition, and pairing it with `visibility` makes the hidden images truly hidden from screen readers.
 
 ```css
-.spotlight__media > figure {
+.accordion-group__media > figure {
   opacity: 0;
   visibility: hidden;
   /* fade out, and only become hidden once the fade has finished */
   transition: opacity 0.5s ease, visibility 0s linear 0.5s;
 }
 
-.spotlight__media > figure.is-active {
+.accordion-group__media > figure.is-active {
   opacity: 1;
   visibility: visible;
   /* become visible right away, then fade in */
@@ -197,7 +197,7 @@ Now hide every figure except the active one. Fading `opacity` gives us a smooth 
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spotlight__media > figure { transition: none; }
+  .accordion-group__media > figure { transition: none; }
 }
 ```
 
@@ -208,9 +208,9 @@ It's tempting to dim closed accordion items with `opacity`, but that also lowers
 {% endcallout %}
 
 ```css
-.spotlight details { color: #5f6368; }
-.spotlight details:is([open], :hover, :focus-within) { color: #0c2340; }
-.spotlight details[open] { background: #f1f2f4; }
+.accordion-group details { color: #5f6368; }
+.accordion-group details:is([open], :hover, :focus-within) { color: #0c2340; }
+.accordion-group details[open] { background: #f1f2f4; }
 ```
 
 ## Step 5: Wire it up with the toggle event
@@ -218,11 +218,11 @@ It's tempting to dim closed accordion items with `opacity`, but that also lowers
 This is the only JavaScript we need. Every `<details>` fires a `toggle` event when it opens or closes, however that happens: a click, the keyboard, find-in-page, or another item in the group closing it.
 
 ```js/9-11
-for (const group of document.querySelectorAll("[data-spotlight]")) {
-  const figures = group.querySelectorAll(".spotlight__media > figure");
+for (const group of document.querySelectorAll("[data-accordion-group]")) {
+  const figures = group.querySelectorAll(".accordion-group__media > figure");
 
   const show = (details) => {
-    const target = document.getElementById(details.dataset.spotlightTarget);
+    const target = document.getElementById(details.dataset.accordionGroupTarget);
     if (!target) return;
     figures.forEach((figure) => figure.classList.toggle("is-active", figure === target));
   };
@@ -247,17 +247,17 @@ Two details are worth slowing down for:
 On a phone there isn't room for two columns. Rather than hiding the images (and losing the whole point of the component), we stack them above the list. A container query decides when there's room for two columns, so the component adapts to wherever it's placed, not just to the screen width.
 
 ```css
-.spotlight { container-type: inline-size; }
+.accordion-group { container-type: inline-size; }
 
-.spotlight__layout { display: grid; gap: 1.5rem; }
+.accordion-group__layout { display: grid; gap: 1.5rem; }
 
 /* Narrow: the image sits above the list with a fixed shape */
-.spotlight__media { aspect-ratio: 3 / 2; order: -1; }
+.accordion-group__media { aspect-ratio: 3 / 2; order: -1; }
 
 /* Wide: two columns, and the image stretches to the list's height */
 @container (min-width: 36rem) {
-  .spotlight__layout { grid-template-columns: 1fr 1fr; gap: 2rem; }
-  .spotlight__media  { order: 0; aspect-ratio: auto; min-height: 18rem; }
+  .accordion-group__layout { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .accordion-group__media  { order: 0; aspect-ratio: auto; min-height: 18rem; }
 }
 ```
 
@@ -300,4 +300,4 @@ figures.forEach((figure) => {
 - Listening for `toggle` in the capture phase keeps the image in sync, however an item is opened.
 - A container query moves the image above the list on narrow layouts instead of hiding it.
 
-<!-- ✏️ DRAFT: closing. Add a note from the team, e.g. what content works best in the spotlight (strong single-subject photos, 4–6 items), or where else on campus sites it's being used. -->
+<!-- ✏️ DRAFT: closing. Add a note from the team, e.g. what content works best in an accordion group (strong single-subject photos, 4–6 items), or where else on campus sites it's being used. -->

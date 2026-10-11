@@ -497,9 +497,10 @@ input, select { font: inherit; color: inherit; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .toggle[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--navy); } }
 
 /* About page */
-.about__intro { display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; margin-bottom: 1rem; }
+.about { max-width:40rem; margin-inline:auto; }
+.about__intro { margin-bottom: 1rem; }
 @media (max-width: 40rem) { .about__intro { grid-template-columns: minmax(0, 1fr); } .about__photo { max-width: 12rem; } }
-.about__photo { margin: 0; position: relative; aspect-ratio: 1; }
+.about__photo { margin: 0 auto 2rem; position: relative; aspect-ratio: 1; max-width:15rem; border-radius:50%; overflow:hidden; background: var(--navy); }
 .about__photo img, .about__initials { display: block; width: 100%; height: 100%; object-fit: cover; }
 .about__initials {
 	display: grid; place-items: center; background: var(--navy); color: var(--gold-light);

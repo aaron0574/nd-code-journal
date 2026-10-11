@@ -3,7 +3,7 @@
  * Edit freely — this is the single place to rename/re-brand the blog.
  */
 export default {
-	title: "Code Journal",
+	title: "Below the Fold",
 	tagline: "From the web team at Notre Dame",
 	description:
 		"Accessible components, CSS, and hard-won solutions from building websites at the University of Notre Dame, shared so you can use them on your own sites.",

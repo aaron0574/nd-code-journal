@@ -1,7 +1,7 @@
 ---
-title: Fluid type scales with clamp() — no breakpoints
+title: No more breakpoints with fluid type scales using clamp()
 description: A reusable set of custom properties that scale headings smoothly between a phone and a wide desktop, plus the tiny formula behind them.
-date: 2026-09-10
+date: 2026-06-10
 tags: [css, performance]
 languages: [css, js]
 browserSupport: "clamp() is supported everywhere that matters (Baseline since 2020)."

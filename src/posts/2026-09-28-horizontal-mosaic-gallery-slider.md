@@ -9,11 +9,11 @@ draft: false
 ---
 
 <!-- ✏️ DRAFT: intro. Swap in your own voice and details. -->
-Late summer on the nd.edu homepage, our team ran a "How was your summer?" feature: fourteen photos of campus life, from a poet reading outside Hesburgh Library to a tiny tree frog in a biology lab. We didn't want a carousel that hides thirteen of them, and we didn't want a static grid that pushes the rest of the page down. The answer was a **mosaic that scrolls sideways**: tiles of different sizes packed into a band you can swipe, trackpad through, or page with arrow buttons.
+Late summer on the nd.edu homepage, our team ran a "How was your summer?" feature: fourteen photos of campus life, from a poet reading outside Hesburgh Library to a tiny tree frog in a biology lab. We didn't want a carousel that hides all but one image, and we didn't want a static grid that pushes the rest of the page down. The answer was a **mosaic that scrolls horizontally**: tiles of different sizes packed into a band you can swipe, scroll, or page with arrow buttons.
 
 It ships in the Notre Dame Web Theme as the `.gallery--slider` modifier. This post takes the idea apart and rebuilds it as a portable component you can use on any site.
 
-{% demo "Mosaic slider (drag, swipe, or use the arrows)", 420 %}
+{% demo "Mosaic slider (drag, swipe, or use the arrows)", 475 %}
 <section class="mosaic" data-mosaic aria-label="Summer photo gallery">
   <ul class="mosaic__track" tabindex="0">
     <li><span class="ph">1</span></li><li><span class="ph">2</span></li>
@@ -174,11 +174,7 @@ In production the breakpoint is a media query at `60em`, and the cells are sized
 .mosaic__track > li { scroll-snap-align: start; }
 ```
 
-{% callout "note", "Something we caught while writing this up" %}
-The production CSS sets `scroll-snap-type: x mandatory` on the list but never gives the tiles a `scroll-snap-align`, so snapping never actually happens. Scroll snap needs both halves: the container opts in, and each child says where it lands.
-{% endcallout %}
-
-The thin gold scrollbar sits on a hairline rule that's drawn with an `::after` pseudo-element behind the track. It's a small touch, but it makes the scrollbar look like part of the design. The production version also styles `::-webkit-scrollbar` for older Safari. The standard `scrollbar-color` covers current browsers.
+The thin gold scrollbar sits on a hairline rule that's drawn with an `::after` pseudo-element behind the track. It's a small touch, but it makes the scrollbar look like part of the design.
 
 ## The arrow buttons
 
@@ -210,14 +206,6 @@ for (const gallery of document.querySelectorAll("[data-mosaic]")) {
   update();
 }
 ```
-
-This version changes a few things from what runs on nd.edu:
-
-- **`disabled` instead of `display: none`.** If a button disappears while it has keyboard focus, focus drops back to the top of the page. A disabled button stays where it is.
-- **Per-gallery lookups, no IDs.** The theme markup gives the buttons `id="previous"` and `id="next"`, which causes duplicate IDs when a page has two galleries.
-- **Reduced motion.** Smooth scrolling is skipped for people who've asked their OS for less motion.
-
-We kept one trick from the theme. The buttons are `display: none` until `@media (scripting: enabled)` matches, so visitors without JavaScript never see arrows that do nothing.
 
 ```css
 .mosaic__btn { display: none; }
